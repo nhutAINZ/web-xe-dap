@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StoreBranch } from '../../types';
-import { X, MapPin, PhoneCall, Clock, Navigation, CheckCircle2 } from 'lucide-react';
+import { X, MapPin, PhoneCall, Clock, Navigation, CheckCircle2, LocateFixed, ExternalLink } from 'lucide-react';
 import { analytics } from '../../services/analytics';
 
 interface BranchModalProps {
@@ -16,34 +16,106 @@ export const BranchModal: React.FC<BranchModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  const [selectedBranch, setSelectedBranch] = useState<StoreBranch>(branches[0]);
+  const [selectedBranch, setSelectedBranch] = useState<StoreBranch>(branches[0] || {} as StoreBranch);
+  const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [nearestDistance, setNearestDistance] = useState<string | null>(null);
+  const [isLocating, setIsLocating] = useState(false);
+
+  // Haversine distance formula in KM
+  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+    const R = 6371; // Earth radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  };
+
+  const handleFindNearestShowroom = () => {
+    if (!navigator.geolocation) {
+      alert('Trình duyệt của bạn không hỗ trợ định vị GPS.');
+      return;
+    }
+
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setIsLocating(false);
+        const { latitude, longitude } = pos.coords;
+        setUserCoords({ lat: latitude, lng: longitude });
+
+        // Find nearest branch
+        let minD = Infinity;
+        let closest: StoreBranch = branches[0];
+
+        branches.forEach(b => {
+          if (b.lat && b.lng) {
+            const d = calculateDistance(latitude, longitude, b.lat, b.lng);
+            if (d < minD) {
+              minD = d;
+              closest = b;
+            }
+          }
+        });
+
+        setSelectedBranch(closest);
+        setNearestDistance(minD < 100 ? `${minD.toFixed(1)} km` : `${Math.round(minD)} km`);
+        analytics.logClick('banner', `Tìm thấy showroom gần nhất: ${closest.name}`);
+      },
+      (err) => {
+        setIsLocating(false);
+        alert('Không thể lấy vị trí hiện tại. Vui lòng cho phép quyền truy cập vị trí trên trình duyệt.');
+      }
+    );
+  };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div 
         className="modal-content"
-        style={{ maxWidth: '860px', padding: '2rem' }}
+        style={{ maxWidth: '920px', padding: '2rem' }}
         onClick={(e) => e.stopPropagation()}
       >
         <button className="modal-close-btn" onClick={onClose}>
           <X size={20} />
         </button>
 
-        <div style={{ marginBottom: '1.5rem' }}>
-          <div style={{ color: '#f97316', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
-            HỆ THỐNG PHÂN PHỐI CHÍNH THỨC
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <div style={{ color: '#f97316', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.25rem' }}>
+              HỆ THỐNG SHOWROOM & BẢN ĐỒ GOOGLE MAPS
+            </div>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a' }}>
+              Trải Nghiệm Lái Thử Thực Tế Tại Showroom
+            </h2>
+            <p style={{ color: '#64748b', fontSize: '0.88rem' }}>
+              Ghé thăm để được chuyên gia căn chỉnh size xe miễn phí bằng máy đo laser.
+            </p>
           </div>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0f172a' }}>
-            Danh Sách 4 Showroom Trải Nghiệm Thực Tế
-          </h2>
-          <p style={{ color: '#64748b', fontSize: '0.9rem' }}>
-            Ghé thăm để trải nghiệm lái thử hơn 50+ mẫu xe và nhận tư vấn cân chỉnh size xe miễn phí từ chuyên gia.
-          </p>
+
+          <button
+            onClick={handleFindNearestShowroom}
+            className="btn btn-primary btn-sm"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}
+          >
+            <LocateFixed size={16} />
+            <span>{isLocating ? 'Đang định vị...' : 'Tìm Showroom Gần Tôi Nhất'}</span>
+          </button>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '1.5rem' }}>
+        {nearestDistance && (
+          <div style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', color: '#065f46', padding: '0.65rem 1rem', borderRadius: '6px', fontSize: '0.85rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <CheckCircle2 size={18} color="#10b981" />
+            <span>Showroom gần bạn nhất: <strong>{selectedBranch.name}</strong> (Cách khoảng ~{nearestDistance})</span>
+          </div>
+        )}
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.35fr', gap: '1.5rem' }}>
           {/* Branch List */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: '420px', overflowY: 'auto' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: '460px', overflowY: 'auto' }}>
             {branches.map((b) => (
               <div
                 key={b.id}
@@ -72,59 +144,64 @@ export const BranchModal: React.FC<BranchModalProps> = ({
                 </div>
                 <div style={{ fontSize: '0.8rem', color: '#334155', display: 'flex', gap: '1rem' }}>
                   <span>📞 {b.phone}</span>
-                  <span>🕒 {b.hours.split('(')[0]}</span>
+                  <span>🕒 {b.hours?.split('(')[0] || '08:00 - 21:00'}</span>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Selected Branch Detail & Map Showcase */}
-          <div style={{ background: '#f8fafc', padding: '1.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', height: '180px', marginBottom: '1.25rem' }}>
-              <img
-                src={selectedBranch.image}
-                alt={selectedBranch.name}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          {/* Selected Branch Detail & Interactive Google Maps */}
+          <div style={{ background: '#f8fafc', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column' }}>
+            {/* Interactive Google Map Embed */}
+            <div style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', height: '220px', marginBottom: '1rem', border: '1px solid #cbd5e1' }}>
+              <iframe
+                title={selectedBranch.name}
+                src={selectedBranch.mapEmbedUrl || `https://maps.google.com/maps?q=${encodeURIComponent(selectedBranch.address)}&t=&z=16&ie=UTF8&iwloc=&output=embed`}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
 
-            <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.65rem' }}>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.5rem' }}>
               {selectedBranch.name}
             </h3>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.85rem', color: '#475569', marginBottom: '1.25rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.85rem', color: '#475569', marginBottom: '1.25rem' }}>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <MapPin size={16} color="#f97316" style={{ flexShrink: 0 }} />
                 <span><strong>Địa chỉ:</strong> {selectedBranch.address}</span>
               </div>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <Clock size={16} color="#0284c7" style={{ flexShrink: 0 }} />
-                <span><strong>Thời gian:</strong> {selectedBranch.hours}</span>
-              </div>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <PhoneCall size={16} color="#10b981" style={{ flexShrink: 0 }} />
-                <span><strong>Hotline cửa hàng:</strong> {selectedBranch.phone}</span>
+                <Clock size={16} color="#f97316" style={{ flexShrink: 0 }} />
+                <span><strong>Giờ mở cửa:</strong> {selectedBranch.hours}</span>
               </div>
             </div>
 
-            <div style={{ marginTop: 'auto', display: 'flex', gap: '0.75rem' }}>
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', gap: '0.75rem', marginTop: 'auto' }}>
               <a
-                href={selectedBranch.mapEmbedUrl}
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(selectedBranch.address)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => analytics.logClick('banner', `Chỉ đường Google Map: ${selectedBranch.name}`)}
-                className="btn btn-primary btn-sm"
-                style={{ flex: 1 }}
+                className="btn btn-primary"
+                style={{ flex: 1, textDecoration: 'none', justifyContent: 'center' }}
+                onClick={() => analytics.logClick('banner', `Chỉ đường Google Maps: ${selectedBranch.name}`)}
               >
                 <Navigation size={16} />
-                <span>Xem Trên Google Maps</span>
+                <span>Chỉ Đường Trên Google Maps</span>
               </a>
+
               <a
                 href={`tel:${selectedBranch.phone.replace(/\s+/g, '')}`}
-                className="btn btn-secondary btn-sm"
+                className="btn btn-secondary"
+                style={{ textDecoration: 'none' }}
+                onClick={() => analytics.logClick('hotline', `Gọi hotline showroom: ${selectedBranch.name}`)}
               >
                 <PhoneCall size={16} />
-                <span>Gọi Cửa Hàng</span>
+                <span>Gọi Ngay</span>
               </a>
             </div>
           </div>

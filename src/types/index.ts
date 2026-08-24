@@ -184,6 +184,8 @@ export interface StoreBranch {
   hotline: string;
   mapEmbedUrl: string;
   image: string;
+  lat?: number;
+  lng?: number;
 }
 
 export interface Article {

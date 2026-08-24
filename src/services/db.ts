@@ -256,6 +256,54 @@ export const db = {
     return getStored<StoreBranch[]>(STORAGE_KEYS.BRANCHES, INITIAL_BRANCHES);
   },
 
+  saveBranch(branch: StoreBranch, user = 'Admin'): void {
+    const branches = this.getBranches();
+    const idx = branches.findIndex(b => b.id === branch.id);
+    if (idx >= 0) branches[idx] = branch;
+    else branches.unshift(branch);
+    setStored(STORAGE_KEYS.BRANCHES, branches);
+    this.logAudit(user, 'Lưu chi nhánh Showroom', branch.name);
+  },
+
+  deleteBranch(branchId: string, user = 'Admin'): void {
+    let branches = this.getBranches();
+    const b = branches.find(item => item.id === branchId);
+    branches = branches.filter(item => item.id !== branchId);
+    setStored(STORAGE_KEYS.BRANCHES, branches);
+    if (b) this.logAudit(user, 'Xóa chi nhánh Showroom', b.name);
+  },
+
+  deleteVoucher(code: string, user = 'Admin'): void {
+    let vouchers = this.getVouchers();
+    vouchers = vouchers.filter(v => v.code !== code);
+    setStored(STORAGE_KEYS.VOUCHERS, vouchers);
+    this.logAudit(user, 'Xóa voucher', code);
+  },
+
+  deleteArticle(id: string, user = 'Admin'): void {
+    let articles = this.getArticles();
+    const a = articles.find(item => item.id === id);
+    articles = articles.filter(item => item.id !== id);
+    setStored(STORAGE_KEYS.ARTICLES, articles);
+    if (a) this.logAudit(user, 'Xóa bài viết', a.title);
+  },
+
+  // DATA EXPORT FOR GIT & BACKUP
+  exportFullDatabaseJSON(): string {
+    const data = {
+      products: this.getProducts(),
+      banners: this.getBanners(),
+      storyChapters: this.getStoryChapters(),
+      branches: this.getBranches(),
+      articles: this.getArticles(),
+      vouchers: this.getVouchers(),
+      customers: this.getCustomers(),
+      orders: this.getOrders(),
+      exportedAt: new Date().toISOString()
+    };
+    return JSON.stringify(data, null, 2);
+  },
+
   // ARTICLES
   getArticles(): Article[] {
     return getStored<Article[]>(STORAGE_KEYS.ARTICLES, INITIAL_ARTICLES);

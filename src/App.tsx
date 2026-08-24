@@ -35,6 +35,7 @@ import { AdminPOS } from './pages/admin/AdminPOS';
 import { AdminCRM } from './pages/admin/AdminCRM';
 import { AdminAnalytics } from './pages/admin/AdminAnalytics';
 import { AdminCMS } from './pages/admin/AdminCMS';
+import { AdminGitSync } from './pages/admin/AdminGitSync';
 import { AdminAudit } from './pages/admin/AdminAudit';
 
 export const App: React.FC = () => {
@@ -278,8 +279,12 @@ export const App: React.FC = () => {
             chapters={chapters}
             articles={articles}
             vouchers={vouchers}
+            branches={branches}
             onRefresh={refreshData}
           />
+        )}
+        {adminTab === 'gitsync' && (
+          <AdminGitSync onRefresh={refreshData} />
         )}
         {adminTab === 'audit' && (
           <AdminAudit />

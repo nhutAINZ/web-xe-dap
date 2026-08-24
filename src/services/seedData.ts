@@ -266,9 +266,10 @@ export const INITIAL_PRODUCTS: Product[] = [
     isFlashSale: true,
     isHot: true,
     isFeatured: true,
-    thumbnail: 'https://images.unsplash.com/photo-1502744688674-c619d3f3b00c?auto=format&fit=crop&w=800&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?auto=format&fit=crop&w=800&q=80',
     gallery: [
-      'https://images.unsplash.com/photo-1502744688674-c619d3f3b00c?auto=format&fit=crop&w=1200&q=80'
+      'https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=1200&q=80'
     ],
     shortDesc: 'Full Carbon T900, ghi đông cá mập đầu tích hợp giấu dây 100%, Group Shimano 105 R7000 22 tốc độ.',
     description: 'Twitter Sniper Pro là cỗ máy tốc độ thực thụ với thiết kế khí động học (Aero) xé gió. Khung sườn, càng trước, cọc yên và tay lái đều bằng Carbon cao cấp, mang lại trọng lượng siêu nhẹ chỉ 8.5kg.',
@@ -458,9 +459,10 @@ export const INITIAL_PRODUCTS: Product[] = [
     isFlashSale: false,
     isHot: false,
     isFeatured: true,
-    thumbnail: 'https://images.unsplash.com/photo-1528629297340-d1d461b55f8e?auto=format&fit=crop&w=800&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=800&q=80',
     gallery: [
-      'https://images.unsplash.com/photo-1528629297340-d1d461b55f8e?auto=format&fit=crop&w=1200&q=80'
+      'https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=1200&q=80'
     ],
     shortDesc: 'Gấp gọn chỉ trong 10 giây, bỏ vừa cốp ô tô 4 chỗ, bộ chuyển động Shimano 7 tốc độ.',
     description: 'Trinx Life 2.0 sở hữu bản lề gấp công nghệ khóa chốt kép siêu chắc chắn. Tiện lợi cho gia đình đi du lịch cắm trại, đi tàu điện Cát Linh / Metro Bến Thành.',
@@ -593,8 +595,10 @@ export const INITIAL_BRANCHES: StoreBranch[] = [
     phone: '0908 123 456',
     hotline: '1900 8888',
     hours: '08:00 - 21:30 (Mở cửa tất cả các ngày trong tuần)',
-    mapEmbedUrl: 'https://maps.google.com/?q=District+1+Ho+Chi+Minh+City',
-    image: 'https://images.unsplash.com/photo-1511994298241-608e28f14fde?auto=format&fit=crop&w=800&q=80'
+    mapEmbedUrl: 'https://maps.google.com/maps?q=188+Nguyen+Thi+Minh+Khai+Ben+Thanh+District+1+Ho+Chi+Minh&t=&z=16&ie=UTF8&iwloc=&output=embed',
+    image: 'https://images.unsplash.com/photo-1511994298241-608e28f14fde?auto=format&fit=crop&w=800&q=80',
+    lat: 10.7725,
+    lng: 106.6908
   },
   {
     id: 'br-hcm-2',
@@ -604,8 +608,10 @@ export const INITIAL_BRANCHES: StoreBranch[] = [
     phone: '0908 234 567',
     hotline: '1900 8888',
     hours: '08:00 - 21:00',
-    mapEmbedUrl: 'https://maps.google.com/?q=Binh+Thanh+Ho+Chi+Minh+City',
-    image: 'https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=800&q=80'
+    mapEmbedUrl: 'https://maps.google.com/maps?q=425+Dien+Bien+Phu+Ward+25+Binh+Thanh+Ho+Chi+Minh&t=&z=16&ie=UTF8&iwloc=&output=embed',
+    image: 'https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=800&q=80',
+    lat: 10.8012,
+    lng: 106.7145
   },
   {
     id: 'br-hn-1',
@@ -615,8 +621,10 @@ export const INITIAL_BRANCHES: StoreBranch[] = [
     phone: '0909 345 678',
     hotline: '1900 8888',
     hours: '08:30 - 21:00',
-    mapEmbedUrl: 'https://maps.google.com/?q=Hoang+Cau+Dong+Da+Ha+Noi',
-    image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=800&q=80'
+    mapEmbedUrl: 'https://maps.google.com/maps?q=89+Hoang+Cau+O+Cho+Dua+Dong+Da+Ha+Noi&t=&z=16&ie=UTF8&iwloc=&output=embed',
+    image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=800&q=80',
+    lat: 21.0185,
+    lng: 105.8234
   },
   {
     id: 'br-dn-1',
@@ -626,8 +634,10 @@ export const INITIAL_BRANCHES: StoreBranch[] = [
     phone: '0909 456 789',
     hotline: '1900 8888',
     hours: '08:00 - 20:30',
-    mapEmbedUrl: 'https://maps.google.com/?q=Nguyen+Van+Linh+Da+Nang',
-    image: 'https://images.unsplash.com/photo-1576435728678-68d0fbf94e91?auto=format&fit=crop&w=800&q=80'
+    mapEmbedUrl: 'https://maps.google.com/maps?q=254+Nguyen+Van+Linh+Thac+Gian+Thanh+Khe+Da+Nang&t=&z=16&ie=UTF8&iwloc=&output=embed',
+    image: 'https://images.unsplash.com/photo-1576435728678-68d0fbf94e91?auto=format&fit=crop&w=800&q=80',
+    lat: 16.0612,
+    lng: 108.2140
   }
 ];
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { UserSession } from '../../types';
 import { 
   LayoutDashboard, ShoppingCart, Package, Users, BarChart3, 
-  Layers, LogOut, ExternalLink, ShieldAlert, Sparkles, Store, FileText, Bike, Clock 
+  Layers, LogOut, ExternalLink, ShieldAlert, Sparkles, Store, FileText, Bike, Clock, GitBranch 
 } from 'lucide-react';
 import { auth } from '../../services/auth';
 
@@ -14,6 +14,7 @@ export type AdminTab =
   | 'crm' 
   | 'analytics' 
   | 'cms' 
+  | 'gitsync'
   | 'audit';
 
 interface AdminLayoutProps {
@@ -115,6 +116,14 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
           >
             <Layers size={18} />
             <span>CMS Banner & Nội Dung {!isAdmin && '🔒'}</span>
+          </button>
+
+          <button
+            onClick={() => onSelectTab('gitsync')}
+            className={`admin-nav-item ${currentTab === 'gitsync' ? 'active' : ''}`}
+          >
+            <GitBranch size={18} />
+            <span>Đồng Bộ & Git Sync</span>
           </button>
 
           <button
