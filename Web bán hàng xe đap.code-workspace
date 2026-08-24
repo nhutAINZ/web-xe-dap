@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../Web dashboard candidate/.agents/rules"
+		},
+		{
+			"path": "../../Web dashboard candidate/.agents/skills"
+		}
+	],
+	"settings": {}
+}
