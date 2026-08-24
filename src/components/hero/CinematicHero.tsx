@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { HeroBanner } from '../../types';
-import { Play, ArrowRight, ShieldCheck, Sparkles, ChevronDown, Award } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Sparkles, ChevronDown, Award, Compass, Sparkle } from 'lucide-react';
 import { analytics } from '../../services/analytics';
 
 interface CinematicHeroProps {
@@ -70,49 +70,56 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
 
       {/* TVC Content Center */}
       <div className="hero-content">
+        {/* Luxury Badge */}
         <div className="hero-badge animate-fade-in">
-          <Sparkles size={15} />
-          {currentBanner.badge || 'DEMO XE ĐẠP 2026'}
+          <span className="pulse-indicator-dot" />
+          <span>{currentBanner.badge || 'BỘ SƯU TẬP PREMIER 2026'}</span>
         </div>
 
+        {/* Display Title with Shimmer and Depth */}
         <h1 className="hero-title animate-fade-in">
           {currentBanner.title}
         </h1>
 
+        {/* Subtitle */}
         <p className="hero-subtitle animate-fade-in">
           {currentBanner.subtitle}
         </p>
 
+        {/* CTA Button Group */}
         <div className="hero-cta-group animate-fade-in">
           <button 
             onClick={() => handleCtaClick(currentBanner.ctaText)}
-            className="btn btn-primary btn-lg"
+            className="btn btn-primary btn-lg hero-btn-primary"
           >
             <span>{currentBanner.ctaText || 'Khám Phá Sản Phẩm'}</span>
-            <ArrowRight size={20} />
+            <ArrowRight size={18} />
           </button>
 
           <button 
             onClick={handleSizeQuizClick}
-            className="btn btn-secondary btn-lg"
+            className="btn btn-secondary btn-lg hero-btn-secondary"
           >
+            <Compass size={18} color="#38bdf8" />
             <span>{currentBanner.secondaryCtaText || 'Tư Vấn Chọn Size Xe'}</span>
           </button>
         </div>
 
-        {/* Feature Pills */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '3rem', flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#cbd5e1', fontSize: '0.85rem' }}>
-            <ShieldCheck size={18} color="#f97316" />
-            <span>Khung Sườn Bảo Hành 5 Năm</span>
+        {/* Floating Glass Trust Bar */}
+        <div className="hero-trust-bar animate-fade-in">
+          <div className="trust-pill">
+            <ShieldCheck size={16} color="#f97316" />
+            <span>Khung Sườn Bảo Hành <strong>5 Năm</strong></span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#cbd5e1', fontSize: '0.85rem' }}>
-            <Award size={18} color="#38bdf8" />
-            <span>100% Linh Kiện Shimano Chính Hãng</span>
+          <div className="trust-divider" />
+          <div className="trust-pill">
+            <Award size={16} color="#38bdf8" />
+            <span>100% Linh Kiện <strong>Shimano Chính Hãng</strong></span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#cbd5e1', fontSize: '0.85rem' }}>
-            <Sparkles size={18} color="#10b981" />
-            <span>Miễn Phí Bảo Dưỡng Trọn Đời</span>
+          <div className="trust-divider" />
+          <div className="trust-pill">
+            <Sparkles size={16} color="#10b981" />
+            <span>Miễn Phí <strong>Cân Vành Trọn Đời</strong></span>
           </div>
         </div>
       </div>

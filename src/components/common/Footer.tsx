@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Bike, MapPin, PhoneCall, Mail, Clock, Send, ShieldCheck, Award, Heart, Check } from 'lucide-react';
 import { analytics } from '../../services/analytics';
+import { BrandLogo } from './BrandLogo';
 
 interface FooterProps {
   onOpenBranches: () => void;
@@ -85,11 +86,8 @@ export const Footer: React.FC<FooterProps> = ({
         <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1.2fr', gap: '2.5rem', marginBottom: '3.5rem' }}>
           {/* Col 1: Brand Info */}
           <div>
-            <div className="logo-brand" style={{ color: '#ffffff', marginBottom: '1rem' }}>
-              <div className="logo-icon-box">
-                <Bike size={24} />
-              </div>
-              <div>DEMO <span>XE ĐẠP</span></div>
+            <div style={{ marginBottom: '1.25rem' }}>
+              <BrandLogo size="lg" />
             </div>
             <p style={{ color: '#94a3b8', fontSize: '0.88rem', lineHeight: 1.6, marginBottom: '1.25rem' }}>
               Hệ thống phân phối xe đạp thể thao, địa hình, xe đua và trợ lực điện chính hãng hàng đầu Việt Nam. Tận tâm nâng niu từng vòng quay bánh xe.

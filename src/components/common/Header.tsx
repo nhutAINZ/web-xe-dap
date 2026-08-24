@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { 
   Search, ShoppingBag, PhoneCall, MapPin, Menu, X, 
-  ChevronDown, Flame, Bike, ShieldCheck, Truck, Sparkles 
+  ChevronDown, Flame, Bike, ShieldCheck, Truck, Sparkles, Command 
 } from 'lucide-react';
 import { BikeCategory } from '../../types';
 import { analytics } from '../../services/analytics';
+import { BrandLogo } from './BrandLogo';
 
 interface HeaderProps {
   cartCount: number;
@@ -34,14 +35,14 @@ export const Header: React.FC<HeaderProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const categories: { key: BikeCategory | 'all'; label: string; highlight?: boolean }[] = [
-    { key: 'all', label: 'Tất Cả Sản Phẩm' },
-    { key: 'mtb', label: 'Xe Đạp Địa Hình (MTB)', highlight: true },
-    { key: 'road', label: 'Xe Đạp Đua (Road)' },
-    { key: 'touring', label: 'Xe Đạp Touring' },
+    { key: 'all', label: 'Tất Cả Dòng Xe' },
+    { key: 'mtb', label: 'Xe Địa Hình (MTB)', highlight: true },
+    { key: 'road', label: 'Xe Đua (Road)' },
+    { key: 'touring', label: 'Xe Touring Phượt' },
     { key: 'ebike', label: 'Xe Trợ Lực Điện', highlight: true },
-    { key: 'kids', label: 'Xe Đạp Trẻ Em' },
-    { key: 'folding', label: 'Xe Đạp Gấp' },
-    { key: 'accessories', label: 'Phụ Kiện & Phụ Tùng' },
+    { key: 'kids', label: 'Xe Trẻ Em' },
+    { key: 'folding', label: 'Xe Gấp Gọn' },
+    { key: 'accessories', label: 'Phụ Kiện Chính Hãng' },
   ];
 
   const handleCategoryClick = (cat: BikeCategory | 'all') => {
@@ -63,16 +64,16 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="container top-ticker-inner">
           <div className="ticker-items">
             <span className="ticker-item">
-              <Truck size={14} color="#f97316" />
-              <strong>Freeship toàn quốc</strong> đơn từ 2.000.000đ
+              <Truck size={13} color="#f97316" />
+              <span><strong>Freeship</strong> toàn quốc đơn từ 2.000.000đ</span>
             </span>
             <span className="ticker-item" style={{ display: window.innerWidth < 768 ? 'none' : 'inline-flex' }}>
-              <ShieldCheck size={14} color="#10b981" />
-              <strong>Bảo hành chính hãng 5 năm</strong> - Cân vành trọn đời
+              <ShieldCheck size={13} color="#10b981" />
+              <span><strong>Bảo hành 5 năm</strong> • Cân vành trọn đời</span>
             </span>
             <span className="ticker-item" style={{ display: window.innerWidth < 1024 ? 'none' : 'inline-flex' }}>
-              <Sparkles size={14} color="#38bdf8" />
-              Tặng bộ phụ kiện cao cấp trị giá <strong>850.000đ</strong>
+              <Sparkles size={13} color="#38bdf8" />
+              <span>Tặng quà phụ kiện <strong>850.000đ</strong> khi đặt trực tuyến</span>
             </span>
           </div>
 
@@ -83,10 +84,10 @@ export const Header: React.FC<HeaderProps> = ({
                 onOpenSizeQuiz();
               }}
               className="ticker-link"
-              style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#f97316', fontWeight: 600 }}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: '#f97316', fontWeight: 700 }}
             >
               <Bike size={13} />
-              Tư Vấn Chọn Size
+              Tư Vấn Size
             </button>
             <button 
               onClick={() => {
@@ -94,7 +95,7 @@ export const Header: React.FC<HeaderProps> = ({
                 onOpenBranches();
               }}
               className="ticker-link"
-              style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}
             >
               <MapPin size={13} />
               4 Showroom Toàn Quốc
@@ -110,54 +111,54 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* Main Header */}
+      {/* Main Unified Dark Glass Header */}
       <header className="main-header">
         <div className="container header-inner">
           {/* Logo Brand */}
-          <button onClick={onNavigateHome} className="logo-brand" title="Về trang chủ Demo Xe Đạp">
-            <div className="logo-icon-box">
-              <Bike size={24} strokeWidth={2.5} />
-            </div>
-            <div>
-              DEMO <span>XE ĐẠP</span>
-            </div>
+          <button onClick={onNavigateHome} className="logo-brand-btn" title="Về trang chủ Demo Xe Đạp">
+            <BrandLogo size="md" />
           </button>
 
-          {/* Search Box */}
+          {/* Luxury Search Box */}
           <div className="header-search">
             <div className="search-input-wrap">
-              <Search className="search-icon" size={18} />
+              <Search className="search-icon" size={17} />
               <input
                 type="text"
                 className="search-input"
-                placeholder="Tìm xe Giant, Trek, Twitter, địa hình, xe đua..."
+                placeholder="Tìm xe Giant, Trek, Twitter, địa hình, phụ kiện..."
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
                 onFocus={() => analytics.logClick('filter_use', 'Tìm kiếm trên Header')}
               />
-              {searchQuery && (
+              {searchQuery ? (
                 <button 
                   onClick={() => onSearchChange('')}
-                  style={{ position: 'absolute', right: '12px', color: '#94a3b8' }}
+                  style={{ position: 'absolute', right: '12px', color: '#94a3b8', background: 'transparent' }}
                 >
-                  <X size={16} />
+                  <X size={15} />
                 </button>
+              ) : (
+                <div className="search-hotkey-badge">
+                  <Command size={11} /> K
+                </div>
               )}
             </div>
           </div>
 
-          {/* Header Action Buttons */}
+          {/* Header Action Badges */}
           <div className="header-actions">
             <a 
               href="tel:19008888" 
-              className="header-action-btn"
+              className="header-action-badge hotline-badge"
               onClick={() => analytics.logClick('hotline', 'Gọi Hotline Header 1900 8888')}
               style={{ display: window.innerWidth < 768 ? 'none' : 'flex' }}
             >
-              <PhoneCall size={18} color="#f97316" />
-              <div style={{ textAlign: 'left', lineHeight: 1.2 }}>
-                <span style={{ fontSize: '0.7rem', color: '#64748b', display: 'block' }}>Hotline 24/7</span>
-                <span style={{ fontWeight: 800, color: '#0f172a' }}>1900 8888</span>
+              <div className="pulse-indicator-dot" />
+              <PhoneCall size={16} color="#f97316" />
+              <div style={{ textAlign: 'left', lineHeight: 1.1 }}>
+                <span style={{ fontSize: '0.65rem', color: '#94a3b8', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Hotline 24/7</span>
+                <strong style={{ fontSize: '0.85rem', color: '#ffffff', letterSpacing: '0.02em' }}>1900 8888</strong>
               </div>
             </a>
 
@@ -166,107 +167,119 @@ export const Header: React.FC<HeaderProps> = ({
                 analytics.logClick('cta_hero', 'Xem showroom header');
                 onOpenBranches();
               }} 
-              className="header-action-btn"
+              className="header-action-badge showroom-badge"
               style={{ display: window.innerWidth < 1024 ? 'none' : 'flex' }}
             >
-              <MapPin size={18} color="#0284c7" />
-              <span>Cửa Hàng</span>
+              <MapPin size={16} color="#38bdf8" />
+              <span>4 Showroom</span>
             </button>
 
-            {/* Cart Button */}
+            {/* Cart Button with Radiant Counter */}
             <button 
               onClick={() => {
                 analytics.logClick('add_to_cart', 'Mở Giỏ Hàng Header');
                 onOpenCart();
               }} 
-              className="header-action-btn"
-              style={{ background: '#f1f5f9' }}
+              className="header-action-badge cart-badge-btn"
             >
-              <ShoppingBag size={20} color="#0f172a" />
-              <span style={{ display: window.innerWidth < 640 ? 'none' : 'inline' }}>Giỏ Hàng</span>
-              {cartCount > 0 && <span className="cart-counter">{cartCount}</span>}
+              <ShoppingBag size={18} color="#ffffff" />
+              <span style={{ display: window.innerWidth < 640 ? 'none' : 'inline', color: '#ffffff', fontWeight: 700 }}>Giỏ Hàng</span>
+              {cartCount > 0 && <span className="cart-counter-glow">{cartCount}</span>}
             </button>
 
             {/* Mobile Menu Toggle */}
             <button 
-              className="header-action-btn"
+              className="header-action-badge mobile-menu-btn"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               style={{ display: window.innerWidth >= 1024 ? 'none' : 'flex' }}
               aria-label="Menu"
             >
-              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+              {mobileMenuOpen ? <X size={20} color="#ffffff" /> : <Menu size={20} color="#ffffff" />}
             </button>
           </div>
         </div>
 
-        {/* Mega Menu Bar (Desktop) */}
-        <div className="mega-menu-bar" style={{ display: window.innerWidth < 1024 ? 'none' : 'block' }}>
+        {/* Mega Menu / Category Ribbon Bar */}
+        <nav className="mega-menu-bar">
           <div className="container">
             <ul className="mega-menu-list">
-              {categories.map((cat) => (
-                <li key={cat.key} className="mega-menu-item">
+              {categories.map((c) => (
+                <li key={c.key} className="mega-menu-item">
                   <button
-                    onClick={() => handleCategoryClick(cat.key)}
-                    className={`mega-menu-link ${selectedCategory === cat.key ? 'active' : ''} ${cat.highlight ? 'highlight' : ''}`}
+                    onClick={() => handleCategoryClick(c.key)}
+                    className={`mega-menu-link ${selectedCategory === c.key ? 'active' : ''}`}
                   >
-                    {cat.highlight && <Flame size={14} color="#f97316" />}
-                    {cat.label}
+                    {c.highlight && <Flame size={13} color="#f97316" />}
+                    <span>{c.label}</span>
+                    {selectedCategory === c.key && <span className="active-beam" />}
                   </button>
                 </li>
               ))}
             </ul>
           </div>
-        </div>
+        </nav>
+      </header>
 
-        {/* Mobile Dropdown Menu */}
-        {mobileMenuOpen && (
-          <div style={{ background: '#0f172a', color: '#ffffff', padding: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-            <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#f97316', marginBottom: '0.75rem', textTransform: 'uppercase' }}>
-              Danh Mục Sản Phẩm
+      {/* Mobile Drawer Menu */}
+      {mobileMenuOpen && (
+        <div className="mobile-drawer-overlay" onClick={() => setMobileMenuOpen(false)}>
+          <div className="mobile-drawer-content" onClick={(e) => e.stopPropagation()}>
+            <div className="mobile-drawer-header">
+              <BrandLogo size="sm" />
+              <button onClick={() => setMobileMenuOpen(false)} style={{ color: '#94a3b8' }}>
+                <X size={20} />
+              </button>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-              {categories.map((cat) => (
-                <button
-                  key={cat.key}
-                  onClick={() => handleCategoryClick(cat.key)}
-                  style={{
-                    textAlign: 'left',
-                    padding: '0.65rem',
-                    background: selectedCategory === cat.key ? 'rgba(249, 115, 22, 0.2)' : 'rgba(255,255,255,0.05)',
-                    borderRadius: '8px',
-                    color: selectedCategory === cat.key ? '#f97316' : '#ffffff',
-                    fontSize: '0.82rem',
-                    fontWeight: 600
-                  }}
+
+            <div className="mobile-drawer-body">
+              <div className="mobile-menu-section-title">Danh Mục Dòng Xe</div>
+              <div className="mobile-cat-list">
+                {categories.map((c) => (
+                  <button
+                    key={c.key}
+                    onClick={() => handleCategoryClick(c.key)}
+                    className={`mobile-cat-item ${selectedCategory === c.key ? 'active' : ''}`}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      {c.highlight && <Flame size={15} color="#f97316" />}
+                      <span>{c.label}</span>
+                    </div>
+                    {selectedCategory === c.key && <span style={{ color: '#f97316' }}>●</span>}
+                  </button>
+                ))}
+              </div>
+
+              <div className="mobile-menu-section-title" style={{ marginTop: '1.5rem' }}>Tiện Ích & Hỗ Trợ</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <button 
+                  onClick={() => { setMobileMenuOpen(false); onOpenSizeQuiz(); }}
+                  className="btn btn-secondary btn-sm"
+                  style={{ width: '100%', justifyContent: 'flex-start', padding: '0.65rem 1rem' }}
                 >
-                  {cat.label}
+                  <Bike size={16} color="#f97316" />
+                  <span>Trắc Nghiệm Chọn Size Xe Chuẩn</span>
                 </button>
-              ))}
-            </div>
-
-            <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-              <button 
-                onClick={() => { onOpenSizeQuiz(); setMobileMenuOpen(false); }}
-                style={{ textAlign: 'left', color: '#38bdf8', fontSize: '0.88rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-              >
-                <Bike size={16} /> Hướng Dẫn Chọn Size Chuẩn
-              </button>
-              <button 
-                onClick={() => { onOpenBranches(); setMobileMenuOpen(false); }}
-                style={{ textAlign: 'left', color: '#f8fafc', fontSize: '0.88rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-              >
-                <MapPin size={16} /> Xem 4 Showroom Trực Tiếp
-              </button>
-              <button 
-                onClick={() => { onOpenAdmin(); setMobileMenuOpen(false); }}
-                style={{ textAlign: 'left', color: '#94a3b8', fontSize: '0.85rem' }}
-              >
-                Trang Quản Trị (/admin)
-              </button>
+                <button 
+                  onClick={() => { setMobileMenuOpen(false); onOpenBranches(); }}
+                  className="btn btn-secondary btn-sm"
+                  style={{ width: '100%', justifyContent: 'flex-start', padding: '0.65rem 1rem' }}
+                >
+                  <MapPin size={16} color="#38bdf8" />
+                  <span>Hệ Thống 4 Showroom Trải Nghiệm</span>
+                </button>
+                <a 
+                  href="tel:19008888"
+                  className="btn btn-primary btn-sm"
+                  style={{ width: '100%', textDecoration: 'none', justifyContent: 'center', marginTop: '0.5rem' }}
+                >
+                  <PhoneCall size={16} />
+                  <span>Gọi Hotline 1900 8888 (Tư Vấn)</span>
+                </a>
+              </div>
             </div>
           </div>
-        )}
-      </header>
+        </div>
+      )}
     </>
   );
 };

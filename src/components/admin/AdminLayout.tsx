@@ -5,6 +5,7 @@ import {
   Layers, LogOut, ExternalLink, ShieldAlert, Sparkles, Store, FileText, Bike, Clock, GitBranch 
 } from 'lucide-react';
 import { auth } from '../../services/auth';
+import { BrandLogo } from '../common/BrandLogo';
 
 export type AdminTab = 
   | 'dashboard' 
@@ -40,14 +41,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
     <div className="admin-app">
       {/* Sidebar */}
       <aside className="admin-sidebar">
-        <div className="admin-brand">
-          <div className="logo-icon-box" style={{ width: '32px', height: '32px' }}>
-            <Bike size={18} />
-          </div>
-          <div>
-            <h2>DEMO XE ĐẠP</h2>
-            <span>{isAdmin ? 'ADMIN PORTAL' : 'STAFF POS/CRM'}</span>
-          </div>
+        <div className="admin-brand" style={{ padding: '0.5rem 0' }}>
+          <BrandLogo size="sm" />
         </div>
 
         <nav className="admin-nav">

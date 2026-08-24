@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { UserSession } from '../../types';
 import { auth } from '../../services/auth';
-import { Bike, Lock, User, ShieldCheck, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Lock, User, ShieldCheck, ArrowRight, ArrowLeft } from 'lucide-react';
+import { BrandLogo } from '../../components/common/BrandLogo';
 
 interface AdminLoginProps {
   onLoginSuccess: (user: UserSession) => void;
@@ -70,26 +71,14 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
 
         {/* Brand Icon */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <div 
-            style={{
-              width: '56px',
-              height: '56px',
-              borderRadius: 'var(--radius-lg)',
-              background: 'linear-gradient(135deg, #f97316, #ea580c)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 1rem auto',
-              boxShadow: '0 8px 20px rgba(249, 115, 22, 0.4)'
-            }}
-          >
-            <Bike size={30} color="#ffffff" />
+          <div style={{ display: 'inline-block', marginBottom: '1rem' }}>
+            <BrandLogo size="lg" />
           </div>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: '0.25rem' }}>
-            DEMO XE ĐẠP PORTAL
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: '0.25rem' }}>
+            HỆ THỐNG QUẢN TRỊ NỘI BỘ
           </h2>
-          <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
-            Đăng nhập hệ thống CMS Quản trị & CRM Bán hàng
+          <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
+            Đăng nhập phân quyền Admin hoặc Nhân viên POS / CRM
           </p>
         </div>
 
