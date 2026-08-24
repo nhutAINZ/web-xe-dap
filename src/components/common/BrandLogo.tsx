@@ -88,8 +88,6 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
             filter="url(#glowFilter)"
           />
 
-          {/* Speed Center Dot */}
-          <circle cx="24" cy="18" r="2.2" fill="#38bdf8" />
         </svg>
       </div>
 
@@ -103,12 +101,10 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
             letterSpacing: '0.06em',
             color: '#ffffff',
             display: 'flex',
-            alignItems: 'center',
-            gap: '3px'
+            alignItems: 'center'
           }}
         >
           DEMO<span style={{ color: '#f97316' }}>XEDAP</span>
-          <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#38bdf8', display: 'inline-block', marginLeft: '1px' }} />
         </div>
         <span 
           style={{ 

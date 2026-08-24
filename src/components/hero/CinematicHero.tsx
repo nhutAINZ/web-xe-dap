@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { HeroBanner } from '../../types';
-import { ArrowRight, ShieldCheck, Sparkles, ChevronDown, Award, Compass, Sparkle } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Wrench, ChevronDown, Award, Compass } from 'lucide-react';
 import { analytics } from '../../services/analytics';
 
 interface CinematicHeroProps {
@@ -118,7 +118,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
           </div>
           <div className="trust-divider" />
           <div className="trust-pill">
-            <Sparkles size={16} color="#10b981" />
+            <Wrench size={16} color="#10b981" />
             <span>Miễn Phí <strong>Cân Vành Trọn Đời</strong></span>
           </div>
         </div>

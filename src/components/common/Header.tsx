@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Search, ShoppingBag, PhoneCall, MapPin, Menu, X, 
-  ChevronDown, Flame, Bike, ShieldCheck, Truck, Sparkles, Command 
+  ChevronDown, Flame, Bike, ShieldCheck, Truck, Gift, Command 
 } from 'lucide-react';
 import { BikeCategory } from '../../types';
 import { analytics } from '../../services/analytics';
@@ -72,7 +72,7 @@ export const Header: React.FC<HeaderProps> = ({
               <span><strong>Bảo hành 5 năm</strong> • Cân vành trọn đời</span>
             </span>
             <span className="ticker-item" style={{ display: window.innerWidth < 1024 ? 'none' : 'inline-flex' }}>
-              <Sparkles size={13} color="#38bdf8" />
+              <Gift size={13} color="#38bdf8" />
               <span>Tặng quà phụ kiện <strong>850.000đ</strong> khi đặt trực tuyến</span>
             </span>
           </div>
