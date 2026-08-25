@@ -49,18 +49,41 @@ export interface AuditLogEntry {
   timestamp: string;
 }
 
+// In-memory Pointer Indices for O(1) lookup
+let _productsCache: Product[] | null = null;
+const _productIdIndex: Map<string, Product> = new Map();
+const _productSlugIndex: Map<string, Product> = new Map();
+
+function rebuildProductIndices(products: Product[]): void {
+  _productsCache = products;
+  _productIdIndex.clear();
+  _productSlugIndex.clear();
+  for (let i = 0; i < products.length; i++) {
+    const p = products[i];
+    _productIdIndex.set(p.id, p);
+    if (p.slug) _productSlugIndex.set(p.slug, p);
+  }
+}
+
 export const db = {
   // PRODUCTS
   getProducts(): Product[] {
-    return getStored<Product[]>(STORAGE_KEYS.PRODUCTS, INITIAL_PRODUCTS);
+    if (_productsCache) return _productsCache;
+    const prods = getStored<Product[]>(STORAGE_KEYS.PRODUCTS, INITIAL_PRODUCTS);
+    rebuildProductIndices(prods);
+    return prods;
   },
 
+  // O(1) lookup via Hash Index pointer
   getProductById(id: string): Product | undefined {
-    return this.getProducts().find(p => p.id === id);
+    if (_productIdIndex.size === 0) this.getProducts();
+    return _productIdIndex.get(id);
   },
 
+  // O(1) lookup via Slug Index pointer
   getProductBySlug(slug: string): Product | undefined {
-    return this.getProducts().find(p => p.slug === slug);
+    if (_productSlugIndex.size === 0) this.getProducts();
+    return _productSlugIndex.get(slug);
   },
 
   saveProduct(product: Product, user = 'Admin'): void {
@@ -74,6 +97,7 @@ export const db = {
       this.logAudit(user, 'Thêm mới sản phẩm', product.name);
     }
     setStored(STORAGE_KEYS.PRODUCTS, products);
+    rebuildProductIndices(products);
   },
 
   deleteProduct(id: string, user = 'Admin'): boolean {
@@ -82,6 +106,7 @@ export const db = {
     const filtered = products.filter(i => i.id !== id);
     if (filtered.length !== products.length) {
       setStored(STORAGE_KEYS.PRODUCTS, filtered);
+      rebuildProductIndices(filtered);
       this.logAudit(user, 'Xóa sản phẩm', p ? p.name : id);
       return true;
     }

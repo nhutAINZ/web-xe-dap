@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { 
   Product, BikeCategory, CartItem, UserSession, Article, StoreBranch, Order 
 } from './types';
@@ -6,37 +6,45 @@ import { db } from './services/db';
 import { auth } from './services/auth';
 import { analytics } from './services/analytics';
 
-// Storefront Components
+// Core Critical Above-The-Fold Storefront Components (Eager loaded)
 import { Header } from './components/common/Header';
 import { Footer } from './components/common/Footer';
 import { FloatingContact } from './components/common/FloatingContact';
 import { MobileBottomNav } from './components/common/MobileBottomNav';
-import { PromoPopup } from './components/common/PromoPopup';
-import { BranchModal } from './components/common/BranchModal';
 import { CinematicHero } from './components/hero/CinematicHero';
 import { StoryChapterSection } from './components/hero/StoryChapterSection';
 import { ProductGrid } from './components/shop/ProductGrid';
-import { QuickViewModal } from './components/shop/QuickViewModal';
-import { BikeSizingModal } from './components/shop/BikeSizingModal';
 import { BrandShowcase } from './components/shop/BrandShowcase';
 import { BlogSection } from './components/shop/BlogSection';
 import { CartDrawer } from './components/cart/CartDrawer';
-import { CheckoutModal } from './components/cart/CheckoutModal';
-import { ProductDetailPage } from './pages/storefront/ProductDetailPage';
-import { StaticPages } from './pages/storefront/StaticPages';
-
-// Admin Components
 import { AdminLayout, AdminTab } from './components/admin/AdminLayout';
-import { AdminLogin } from './pages/admin/AdminLogin';
-import { AdminDashboard } from './pages/admin/AdminDashboard';
-import { AdminProducts } from './pages/admin/AdminProducts';
-import { AdminOrders } from './pages/admin/AdminOrders';
-import { AdminPOS } from './pages/admin/AdminPOS';
-import { AdminCRM } from './pages/admin/AdminCRM';
-import { AdminAnalytics } from './pages/admin/AdminAnalytics';
-import { AdminCMS } from './pages/admin/AdminCMS';
-import { AdminGitSync } from './pages/admin/AdminGitSync';
-import { AdminAudit } from './pages/admin/AdminAudit';
+
+// Async Lazy Loaded Modals (Loaded on demand to speed up initial bundle & FCP)
+const PromoPopup = lazy(() => import('./components/common/PromoPopup').then(m => ({ default: m.PromoPopup })));
+const BranchModal = lazy(() => import('./components/common/BranchModal').then(m => ({ default: m.BranchModal })));
+const QuickViewModal = lazy(() => import('./components/shop/QuickViewModal').then(m => ({ default: m.QuickViewModal })));
+const BikeSizingModal = lazy(() => import('./components/shop/BikeSizingModal').then(m => ({ default: m.BikeSizingModal })));
+const CheckoutModal = lazy(() => import('./components/cart/CheckoutModal').then(m => ({ default: m.CheckoutModal })));
+const ProductDetailPage = lazy(() => import('./pages/storefront/ProductDetailPage').then(m => ({ default: m.ProductDetailPage })));
+const StaticPages = lazy(() => import('./pages/storefront/StaticPages').then(m => ({ default: m.StaticPages })));
+
+// Async Lazy Loaded Admin Sub-modules
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin').then(m => ({ default: m.AdminLogin })));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
+const AdminProducts = lazy(() => import('./pages/admin/AdminProducts').then(m => ({ default: m.AdminProducts })));
+const AdminOrders = lazy(() => import('./pages/admin/AdminOrders').then(m => ({ default: m.AdminOrders })));
+const AdminPOS = lazy(() => import('./pages/admin/AdminPOS').then(m => ({ default: m.AdminPOS })));
+const AdminCRM = lazy(() => import('./pages/admin/AdminCRM').then(m => ({ default: m.AdminCRM })));
+const AdminAnalytics = lazy(() => import('./pages/admin/AdminAnalytics').then(m => ({ default: m.AdminAnalytics })));
+const AdminCMS = lazy(() => import('./pages/admin/AdminCMS').then(m => ({ default: m.AdminCMS })));
+const AdminGitSync = lazy(() => import('./pages/admin/AdminGitSync').then(m => ({ default: m.AdminGitSync })));
+const AdminAudit = lazy(() => import('./pages/admin/AdminAudit').then(m => ({ default: m.AdminAudit })));
+
+const FallbackLoader: React.FC = () => (
+  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '300px', width: '100%' }}>
+    <div style={{ width: '36px', height: '36px', border: '3px solid #e2e8f0', borderTopColor: '#f97316', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+  </div>
+);
 
 export const App: React.FC = () => {
   // App Data State from Database
@@ -218,10 +226,12 @@ export const App: React.FC = () => {
   if (viewMode === 'admin') {
     if (!currentUser) {
       return (
-        <AdminLogin
-          onLoginSuccess={(user) => setCurrentUser(user)}
-          onBackToStore={handleNavigateHome}
-        />
+        <Suspense fallback={<FallbackLoader />}>
+          <AdminLogin
+            onLoginSuccess={(user) => setCurrentUser(user)}
+            onBackToStore={handleNavigateHome}
+          />
+        </Suspense>
       );
     }
 
@@ -236,59 +246,61 @@ export const App: React.FC = () => {
         }}
         onViewStorefront={handleNavigateHome}
       >
-        {adminTab === 'dashboard' && (
-          <AdminDashboard
-            products={products}
-            orders={orders}
-            customers={customers}
-            onNavigateTab={setAdminTab}
-          />
-        )}
-        {adminTab === 'pos' && (
-          <AdminPOS
-            products={products}
-            customers={customers}
-            onOrderCreated={refreshData}
-          />
-        )}
-        {adminTab === 'orders' && (
-          <AdminOrders
-            orders={orders}
-            onRefresh={refreshData}
-          />
-        )}
-        {adminTab === 'products' && (
-          <AdminProducts
-            products={products}
-            onRefresh={refreshData}
-          />
-        )}
-        {adminTab === 'crm' && (
-          <AdminCRM
-            customers={customers}
-            orders={orders}
-            onRefresh={refreshData}
-          />
-        )}
-        {adminTab === 'analytics' && (
-          <AdminAnalytics />
-        )}
-        {adminTab === 'cms' && (
-          <AdminCMS
-            banners={banners}
-            chapters={chapters}
-            articles={articles}
-            vouchers={vouchers}
-            branches={branches}
-            onRefresh={refreshData}
-          />
-        )}
-        {adminTab === 'gitsync' && (
-          <AdminGitSync onRefresh={refreshData} />
-        )}
-        {adminTab === 'audit' && (
-          <AdminAudit />
-        )}
+        <Suspense fallback={<FallbackLoader />}>
+          {adminTab === 'dashboard' && (
+            <AdminDashboard
+              products={products}
+              orders={orders}
+              customers={customers}
+              onNavigateTab={setAdminTab}
+            />
+          )}
+          {adminTab === 'pos' && (
+            <AdminPOS
+              products={products}
+              customers={customers}
+              onOrderCreated={refreshData}
+            />
+          )}
+          {adminTab === 'orders' && (
+            <AdminOrders
+              orders={orders}
+              onRefresh={refreshData}
+            />
+          )}
+          {adminTab === 'products' && (
+            <AdminProducts
+              products={products}
+              onRefresh={refreshData}
+            />
+          )}
+          {adminTab === 'crm' && (
+            <AdminCRM
+              customers={customers}
+              orders={orders}
+              onRefresh={refreshData}
+            />
+          )}
+          {adminTab === 'analytics' && (
+            <AdminAnalytics />
+          )}
+          {adminTab === 'cms' && (
+            <AdminCMS
+              banners={banners}
+              chapters={chapters}
+              articles={articles}
+              vouchers={vouchers}
+              branches={branches}
+              onRefresh={refreshData}
+            />
+          )}
+          {adminTab === 'gitsync' && (
+            <AdminGitSync onRefresh={refreshData} />
+          )}
+          {adminTab === 'audit' && (
+            <AdminAudit />
+          )}
+        </Suspense>
       </AdminLayout>
     );
   }
@@ -312,63 +324,65 @@ export const App: React.FC = () => {
 
       {/* Main Content Router */}
       <main>
-        {viewMode === 'product_detail' && selectedProduct ? (
-          <ProductDetailPage
-            product={selectedProduct}
-            allProducts={products}
-            onBack={handleNavigateHome}
-            onAddToCart={handleAddToCart}
-            onSelectProduct={handleViewProductDetail}
-          />
-        ) : viewMode === 'static_page' ? (
-          <StaticPages
-            pageKey={staticPageKey}
-            article={selectedArticle}
-            branches={branches}
-            onBack={handleNavigateHome}
-          />
-        ) : (
-          /* Storefront Homepage */
-          <>
-            {/* 1. Cinematic Hero TVC Intro */}
-            <CinematicHero
-              banners={banners}
-              onOpenSizeQuiz={() => setIsSizeQuizOpen(true)}
-              onExploreProducts={handleScrollToShop}
+        <Suspense fallback={<FallbackLoader />}>
+          {viewMode === 'product_detail' && selectedProduct ? (
+            <ProductDetailPage
+              product={selectedProduct}
+              allProducts={products}
+              onBack={handleNavigateHome}
+              onAddToCart={handleAddToCart}
+              onSelectProduct={handleViewProductDetail}
             />
+          ) : viewMode === 'static_page' ? (
+            <StaticPages
+              pageKey={staticPageKey}
+              article={selectedArticle}
+              branches={branches}
+              onBack={handleNavigateHome}
+            />
+          ) : (
+            /* Storefront Homepage */
+            <>
+              {/* 1. Cinematic Hero TVC Intro */}
+              <CinematicHero
+                banners={banners}
+                onOpenSizeQuiz={() => setIsSizeQuizOpen(true)}
+                onExploreProducts={handleScrollToShop}
+              />
 
-            {/* 2. Storytelling Chapters Section (xedapvietnam style) */}
-            <StoryChapterSection
-              chapters={chapters}
-              onScrollToShop={handleScrollToShop}
-            />
+              {/* 2. Storytelling Chapters Section (xedapvietnam style) */}
+              <StoryChapterSection
+                chapters={chapters}
+                onScrollToShop={handleScrollToShop}
+              />
 
-            {/* 3. E-Commerce Product Grid Section (xedapgiakho style) */}
-            <ProductGrid
-              products={products}
-              selectedCategory={selectedCategory}
-              onSelectCategory={setSelectedCategory}
-              searchQuery={searchQuery}
-              onQuickView={(p) => setQuickViewProduct(p)}
-              onAddToCart={(p) => handleAddToCart(p)}
-              onViewDetail={handleViewProductDetail}
-              onOpenSizeQuiz={() => setIsSizeQuizOpen(true)}
-            />
+              {/* 3. E-Commerce Product Grid Section (xedapgiakho style) */}
+              <ProductGrid
+                products={products}
+                selectedCategory={selectedCategory}
+                onSelectCategory={setSelectedCategory}
+                searchQuery={searchQuery}
+                onQuickView={(p) => setQuickViewProduct(p)}
+                onAddToCart={(p) => handleAddToCart(p)}
+                onViewDetail={handleViewProductDetail}
+                onOpenSizeQuiz={() => setIsSizeQuizOpen(true)}
+              />
 
-            {/* 4. Brand Showcase & 4 Core Guarantees */}
-            <BrandShowcase
-              onSelectBrand={(b) => {
-                setSearchQuery(b);
-              }}
-            />
+              {/* 4. Brand Showcase & 4 Core Guarantees */}
+              <BrandShowcase
+                onSelectBrand={(b) => {
+                  setSearchQuery(b);
+                }}
+              />
 
-            {/* 5. Cycling Lifestyle & Blog Articles */}
-            <BlogSection
-              articles={articles}
-              onReadArticle={handleReadArticle}
-            />
-          </>
-        )}
+              {/* 5. Cycling Lifestyle & Blog Articles */}
+              <BlogSection
+                articles={articles}
+                onReadArticle={handleReadArticle}
+              />
+            </>
+          )}
+        </Suspense>
       </main>
 
       {/* Global Footer */}
@@ -397,51 +411,62 @@ export const App: React.FC = () => {
         onOpenCart={() => setIsCartDrawerOpen(true)}
       />
 
-      {/* Promo Voucher Popup */}
-      <PromoPopup />
+      {/* Async Lazy Loaded Modals */}
+      <Suspense fallback={null}>
+        {/* Promo Voucher Popup */}
+        <PromoPopup />
 
-      {/* Quick View Modal */}
-      <QuickViewModal
-        product={quickViewProduct}
-        onClose={() => setQuickViewProduct(null)}
-        onAddToCart={handleAddToCart}
-        onViewFullDetail={handleViewProductDetail}
-      />
+        {/* Quick View Modal */}
+        {quickViewProduct && (
+          <QuickViewModal
+            product={quickViewProduct}
+            onClose={() => setQuickViewProduct(null)}
+            onAddToCart={handleAddToCart}
+            onViewFullDetail={handleViewProductDetail}
+          />
+        )}
 
-      {/* Bike Sizing Guide & Recommendation Modal */}
-      <BikeSizingModal
-        isOpen={isSizeQuizOpen}
-        onClose={() => setIsSizeQuizOpen(false)}
-        products={products}
-        onSelectProduct={handleViewProductDetail}
-      />
+        {/* Bike Sizing Guide & Recommendation Modal */}
+        {isSizeQuizOpen && (
+          <BikeSizingModal
+            isOpen={isSizeQuizOpen}
+            onClose={() => setIsSizeQuizOpen(false)}
+            products={products}
+            onSelectProduct={handleViewProductDetail}
+          />
+        )}
 
-      {/* Showroom Locator Modal */}
-      <BranchModal
-        isOpen={isBranchesOpen}
-        onClose={() => setIsBranchesOpen(false)}
-        branches={branches}
-      />
+        {/* Showroom Locator Modal */}
+        {isBranchesOpen && (
+          <BranchModal
+            isOpen={isBranchesOpen}
+            onClose={() => setIsBranchesOpen(false)}
+            branches={branches}
+          />
+        )}
 
-      {/* Slide-over Cart Drawer */}
-      <CartDrawer
-        isOpen={isCartDrawerOpen}
-        onClose={() => setIsCartDrawerOpen(false)}
-        cartItems={cartItems}
-        onUpdateQty={handleUpdateCartQty}
-        onRemoveItem={handleRemoveCartItem}
-        onProceedCheckout={handleProceedCheckout}
-      />
+        {/* Slide-over Cart Drawer */}
+        <CartDrawer
+          isOpen={isCartDrawerOpen}
+          onClose={() => setIsCartDrawerOpen(false)}
+          cartItems={cartItems}
+          onUpdateQty={handleUpdateCartQty}
+          onRemoveItem={handleRemoveCartItem}
+          onProceedCheckout={handleProceedCheckout}
+        />
 
-      {/* 1-Step Checkout Modal with VietQR */}
-      <CheckoutModal
-        isOpen={isCheckoutModalOpen}
-        onClose={() => setIsCheckoutModalOpen(false)}
-        cartItems={cartItems}
-        voucherCode={checkoutVoucher}
-        discountAmount={checkoutDiscount}
-        onOrderSuccess={handleOrderSuccess}
-      />
+        {/* 1-Step Checkout Modal with VietQR */}
+        {isCheckoutModalOpen && (
+          <CheckoutModal
+            isOpen={isCheckoutModalOpen}
+            onClose={() => setIsCheckoutModalOpen(false)}
+            cartItems={cartItems}
+            voucherCode={checkoutVoucher}
+            discountAmount={checkoutDiscount}
+            onOrderSuccess={handleOrderSuccess}
+          />
+        )}
+      </Suspense>
     </div>
   );
 };

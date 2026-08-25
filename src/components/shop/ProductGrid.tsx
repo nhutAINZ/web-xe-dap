@@ -2,8 +2,9 @@ import React, { useState, useMemo } from 'react';
 import { Product, BikeCategory } from '../../types';
 import { ProductCard } from './ProductCard';
 import { FlashSaleBanner } from './FlashSaleBanner';
-import { Filter, SlidersHorizontal, ArrowUpDown, Bike, Sparkles } from 'lucide-react';
+import { Filter, SlidersHorizontal, ArrowUpDown, Bike, Sparkles, Zap } from 'lucide-react';
 import { analytics } from '../../services/analytics';
+import { ShopSearchEngine, SortCriteria } from '../../utils/searchEngine';
 
 interface ProductGridProps {
   products: Product[];
@@ -28,7 +29,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
 }) => {
   const [selectedBrand, setSelectedBrand] = useState<string>('all');
   const [priceRange, setPriceRange] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<'featured' | 'price_asc' | 'price_desc' | 'rating' | 'sold'>('featured');
+  const [sortBy, setSortBy] = useState<SortCriteria>('featured');
   const [showFlashSaleOnly, setShowFlashSaleOnly] = useState(false);
 
   const categories: { key: BikeCategory | 'all'; label: string }[] = [
@@ -42,53 +43,28 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
     { key: 'accessories', label: 'Phụ Kiện' }
   ];
 
+  // Inverted Index Engine singleton instance per product dataset
+  const searchEngine = useMemo(() => {
+    return new ShopSearchEngine(products);
+  }, [products]);
+
   const brands = useMemo(() => {
     const bSet = new Set<string>();
     products.forEach(p => { if (p.brand) bSet.add(p.brand); });
     return ['all', ...Array.from(bSet)];
   }, [products]);
 
+  // Algorithmic query execution via Inverted Index + Binary Range Pointers + QuickSort + LRU cache
   const filteredProducts = useMemo(() => {
-    return products.filter(p => {
-      // Search
-      if (searchQuery) {
-        const q = searchQuery.toLowerCase();
-        const matchName = p.name.toLowerCase().includes(q);
-        const matchBrand = p.brand.toLowerCase().includes(q);
-        const matchCat = p.categoryName.toLowerCase().includes(q);
-        if (!matchName && !matchBrand && !matchCat) return false;
-      }
-
-      // Category
-      if (selectedCategory !== 'all' && p.category !== selectedCategory) {
-        return false;
-      }
-
-      // Brand
-      if (selectedBrand !== 'all' && p.brand !== selectedBrand) {
-        return false;
-      }
-
-      // Flash sale toggle
-      if (showFlashSaleOnly && !p.isFlashSale) {
-        return false;
-      }
-
-      // Price Range
-      if (priceRange === 'under5m' && p.salePrice >= 5000000) return false;
-      if (priceRange === '5m-12m' && (p.salePrice < 5000000 || p.salePrice > 12000000)) return false;
-      if (priceRange === '12m-20m' && (p.salePrice < 12000000 || p.salePrice > 20000000)) return false;
-      if (priceRange === 'above20m' && p.salePrice <= 20000000) return false;
-
-      return true;
-    }).sort((a, b) => {
-      if (sortBy === 'price_asc') return a.salePrice - b.salePrice;
-      if (sortBy === 'price_desc') return b.salePrice - a.salePrice;
-      if (sortBy === 'rating') return b.rating - a.rating;
-      if (sortBy === 'sold') return (b.soldCount || 0) - (a.soldCount || 0);
-      return 0; // default featured
+    return searchEngine.query({
+      searchQuery,
+      category: selectedCategory,
+      brand: selectedBrand,
+      priceRange,
+      showFlashSaleOnly,
+      sortBy
     });
-  }, [products, searchQuery, selectedCategory, selectedBrand, priceRange, sortBy, showFlashSaleOnly]);
+  }, [searchEngine, searchQuery, selectedCategory, selectedBrand, priceRange, sortBy, showFlashSaleOnly]);
 
   return (
     <section id="products-section" style={{ padding: '4rem 0', background: '#f8fafc' }}>
