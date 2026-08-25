@@ -105,31 +105,10 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
         </div>
 
         {/* Top Product Section */}
-        <div 
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1.1fr 1fr',
-            gap: '3rem',
-            background: '#ffffff',
-            borderRadius: 'var(--radius-xl)',
-            padding: '2.5rem',
-            border: '1px solid var(--border-light)',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.03)',
-            marginBottom: '3rem'
-          }}
-        >
+        <div className="pdp-top-card">
           {/* Left: Gallery Showcase */}
           <div>
-            <div 
-              style={{
-                borderRadius: 'var(--radius-lg)',
-                overflow: 'hidden',
-                background: '#f8fafc',
-                border: '1px solid var(--border-light)',
-                height: '460px',
-                position: 'relative'
-              }}
-            >
+            <div className="pdp-gallery-main">
               <img
                 src={activeImage}
                 alt={product.name}
@@ -145,18 +124,19 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
             </div>
 
             {/* Thumbnail Navigation */}
-            <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
+            <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.85rem', overflowX: 'auto', paddingBottom: '0.25rem' }}>
               {[product.thumbnail, ...product.gallery].slice(0, 5).map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setActiveImage(img)}
                   style={{
-                    width: '75px',
-                    height: '75px',
+                    width: '65px',
+                    height: '65px',
                     borderRadius: '8px',
                     overflow: 'hidden',
                     border: activeImage === img ? '2px solid #f97316' : '1px solid #e2e8f0',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    flexShrink: 0
                   }}
                 >
                   <img src={img} alt="thumb" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -171,21 +151,21 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               {product.brand} • {product.categoryName}
             </div>
 
-            <h1 style={{ fontSize: '1.85rem', fontWeight: 900, color: '#0f172a', lineHeight: 1.25, marginBottom: '0.85rem' }}>
+            <h1 style={{ fontSize: 'clamp(1.4rem, 3vw, 1.85rem)', fontWeight: 900, color: '#0f172a', lineHeight: 1.25, marginBottom: '0.85rem' }}>
               {product.name}
             </h1>
 
             {/* Rating Row */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.25rem', fontSize: '0.9rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.25rem', fontSize: '0.88rem', flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', color: '#f59e0b' }}>
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={16} fill={i < Math.floor(product.rating) ? '#f59e0b' : 'none'} color="#f59e0b" />
+                  <Star key={i} size={15} fill={i < Math.floor(product.rating) ? '#f59e0b' : 'none'} color="#f59e0b" />
                 ))}
               </div>
               <span style={{ fontWeight: 700, color: '#0f172a' }}>{product.rating}</span>
-              <span style={{ color: '#64748b' }}>({reviewsList.length} đánh giá thực tế)</span>
-              <span style={{ marginLeft: 'auto', color: '#10b981', fontWeight: 700 }}>
-                ● Còn {product.stock} chiếc tại kho
+              <span style={{ color: '#64748b' }}>({reviewsList.length} đánh giá)</span>
+              <span style={{ color: '#10b981', fontWeight: 700 }}>
+                ● Còn {product.stock} chiếc
               </span>
             </div>
 
@@ -193,37 +173,38 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
             <div 
               style={{
                 background: 'linear-gradient(135deg, #fef2f2 0%, #fff7ed 100%)',
-                padding: '1.25rem',
+                padding: '1rem 1.25rem',
                 borderRadius: 'var(--radius-lg)',
                 border: '1px solid #fee2e2',
-                marginBottom: '1.5rem',
+                marginBottom: '1.25rem',
                 display: 'flex',
                 alignItems: 'baseline',
-                gap: '1rem'
+                gap: '0.75rem',
+                flexWrap: 'wrap'
               }}
             >
-              <span style={{ fontSize: '2.1rem', fontWeight: 900, color: '#ef4444', fontFamily: 'var(--font-display)' }}>
+              <span style={{ fontSize: 'clamp(1.6rem, 3vw, 2.1rem)', fontWeight: 900, color: '#ef4444', fontFamily: 'var(--font-display)' }}>
                 {formatPrice(product.salePrice)}
               </span>
               {product.originalPrice > product.salePrice && (
-                <span style={{ fontSize: '1.1rem', color: '#94a3b8', textDecoration: 'line-through' }}>
+                <span style={{ fontSize: '1rem', color: '#94a3b8', textDecoration: 'line-through' }}>
                   {formatPrice(product.originalPrice)}
                 </span>
               )}
             </div>
 
             {/* Short Description */}
-            <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+            <p style={{ color: '#475569', fontSize: '0.92rem', lineHeight: 1.6, marginBottom: '1.25rem' }}>
               {product.shortDesc}
             </p>
 
             {/* Color Selector */}
             {product.variants.length > 0 && (
               <div style={{ marginBottom: '1.25rem' }}>
-                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.5rem' }}>
+                <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.4rem' }}>
                   Chọn màu sắc: <span style={{ color: '#f97316' }}>{selectedVariant.colorName}</span>
                 </div>
-                <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                   {product.variants.map((v) => (
                     <button
                       key={v.id}
@@ -231,16 +212,16 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '0.5rem',
-                        padding: '0.5rem 0.95rem',
+                        gap: '0.4rem',
+                        padding: '0.45rem 0.85rem',
                         borderRadius: 'var(--radius-md)',
                         border: selectedVariant.id === v.id ? '2px solid #f97316' : '1px solid #cbd5e1',
                         background: selectedVariant.id === v.id ? '#fff7ed' : '#ffffff',
                         fontWeight: 600,
-                        fontSize: '0.88rem'
+                        fontSize: '0.85rem'
                       }}
                     >
-                      <span style={{ width: '16px', height: '16px', borderRadius: '50%', background: v.colorHex, border: '1px solid rgba(0,0,0,0.15)' }} />
+                      <span style={{ width: '14px', height: '14px', borderRadius: '50%', background: v.colorHex, border: '1px solid rgba(0,0,0,0.15)' }} />
                       {v.colorName}
                     </button>
                   ))}
@@ -250,28 +231,28 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 
             {/* Size Selector */}
             {selectedVariant.sizes.length > 0 && (
-              <div style={{ marginBottom: '1.75rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>
+              <div style={{ marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem', flexWrap: 'wrap', gap: '0.25rem' }}>
+                  <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#0f172a' }}>
                     Chọn kích cỡ khung (Size sườn):
                   </span>
-                  <span style={{ fontSize: '0.8rem', color: '#f97316', fontWeight: 600 }}>
-                    Chiều cao phù hợp: {product.suitableHeightMin} - {product.suitableHeightMax}cm
+                  <span style={{ fontSize: '0.78rem', color: '#f97316', fontWeight: 600 }}>
+                    Cao: {product.suitableHeightMin} - {product.suitableHeightMax}cm
                   </span>
                 </div>
-                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                   {selectedVariant.sizes.map((s) => (
                     <button
                       key={s}
                       onClick={() => setSelectedSize(s)}
                       style={{
-                        padding: '0.6rem 1.1rem',
+                        padding: '0.5rem 0.95rem',
                         borderRadius: 'var(--radius-md)',
                         border: selectedSize === s ? '2px solid #f97316' : '1px solid #cbd5e1',
                         background: selectedSize === s ? '#f97316' : '#f8fafc',
                         color: selectedSize === s ? '#ffffff' : '#334155',
                         fontWeight: 700,
-                        fontSize: '0.88rem'
+                        fontSize: '0.85rem'
                       }}
                     >
                       {s}
@@ -282,7 +263,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
             )}
 
             {/* Action CTAs */}
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.75rem' }}>
+            <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem' }}>
               <button
                 onClick={handleAdd}
                 className="btn btn-primary btn-lg"
@@ -295,15 +276,16 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 
             {/* Guarantees Matrix */}
             <div 
+              className="pdp-guarantees-matrix"
               style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr',
-                gap: '0.85rem',
+                gap: '0.75rem',
                 background: '#f8fafc',
-                padding: '1.25rem',
+                padding: '1rem',
                 borderRadius: 'var(--radius-md)',
                 border: '1px solid #e2e8f0',
-                fontSize: '0.82rem',
+                fontSize: '0.8rem',
                 color: '#475569'
               }}
             >
@@ -324,7 +306,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
         </div>
 
         {/* Specifications & Detailed Overview */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '2.5rem', marginBottom: '3.5rem' }}>
+        <div className="pdp-specs-grid">
           {/* Detailed Description */}
           <div style={{ background: '#ffffff', padding: '2rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)' }}>
             <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#0f172a', marginBottom: '1rem', borderBottom: '2px solid #f1f5f9', paddingBottom: '0.5rem' }}>
@@ -378,12 +360,12 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
         </div>
 
         {/* Customer Reviews Section */}
-        <div style={{ background: '#ffffff', padding: '2.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', marginBottom: '3.5rem' }}>
+        <div style={{ background: '#ffffff', padding: '2rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', marginBottom: '3.5rem' }}>
           <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0f172a', marginBottom: '1.5rem' }}>
             Đánh Giá & Nhận Xét Của Khách Hàng ({reviewsList.length})
           </h3>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '2.5rem', alignItems: 'start' }}>
+          <div className="pdp-reviews-grid">
             {/* Reviews List */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxHeight: '420px', overflowY: 'auto' }}>
               {reviewsList.length === 0 ? (
@@ -479,7 +461,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
             <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0f172a', marginBottom: '1.5rem' }}>
               Sản Phẩm Cùng Phân Khúc Bạn Có Thể Thích
             </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
+            <div className="pdp-related-grid">
               {relatedBikes.map(bike => (
                 <div
                   key={bike.id}

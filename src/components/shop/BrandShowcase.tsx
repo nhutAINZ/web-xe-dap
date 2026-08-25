@@ -33,7 +33,7 @@ export const BrandShowcase: React.FC<BrandShowcaseProps> = ({ onSelectBrand }) =
         </div>
 
         {/* Brands Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '1rem', marginBottom: '3.5rem' }}>
+        <div className="brands-grid">
           {brands.map((b) => (
             <button
               key={b.name}
@@ -47,7 +47,7 @@ export const BrandShowcase: React.FC<BrandShowcaseProps> = ({ onSelectBrand }) =
                 background: '#f8fafc',
                 border: '1.5px solid #e2e8f0',
                 borderRadius: 'var(--radius-lg)',
-                padding: '1.5rem 1rem',
+                padding: '1.25rem 0.75rem',
                 textAlign: 'center',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
@@ -67,7 +67,7 @@ export const BrandShowcase: React.FC<BrandShowcaseProps> = ({ onSelectBrand }) =
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              <div style={{ fontSize: '1.35rem', fontWeight: 900, color: '#0f172a', fontFamily: 'var(--font-display)', marginBottom: '0.25rem' }}>
+              <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0f172a', fontFamily: 'var(--font-display)', marginBottom: '0.2rem' }}>
                 {b.name}
               </div>
               <div style={{ fontSize: '0.75rem', color: '#f97316', fontWeight: 600, marginBottom: '0.15rem' }}>
@@ -81,7 +81,7 @@ export const BrandShowcase: React.FC<BrandShowcaseProps> = ({ onSelectBrand }) =
         </div>
 
         {/* 4 Core Guarantees */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
+        <div className="guarantees-grid">
           {[
             {
               icon: <ShieldCheck size={28} color="#f97316" />,
@@ -109,7 +109,7 @@ export const BrandShowcase: React.FC<BrandShowcaseProps> = ({ onSelectBrand }) =
               style={{
                 display: 'flex',
                 alignItems: 'flex-start',
-                gap: '1rem',
+                gap: '0.85rem',
                 padding: '1.25rem',
                 background: '#f8fafc',
                 borderRadius: 'var(--radius-md)',
@@ -118,10 +118,10 @@ export const BrandShowcase: React.FC<BrandShowcaseProps> = ({ onSelectBrand }) =
             >
               <div style={{ flexShrink: 0 }}>{item.icon}</div>
               <div>
-                <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.25rem' }}>
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.25rem' }}>
                   {item.title}
                 </h4>
-                <p style={{ fontSize: '0.82rem', color: '#64748b', margin: 0, lineHeight: 1.4 }}>
+                <p style={{ fontSize: '0.82rem', color: '#64748b', margin: 0, lineHeight: 1.45 }}>
                   {item.desc}
                 </p>
               </div>

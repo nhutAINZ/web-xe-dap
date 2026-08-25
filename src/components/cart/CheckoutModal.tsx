@@ -193,7 +193,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               </h2>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '2rem' }}>
+            <div className="checkout-grid">
               {/* Left Form: Customer Details */}
               <div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>

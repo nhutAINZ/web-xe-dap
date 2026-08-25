@@ -123,30 +123,30 @@ export const BikeSizingModal: React.FC<BikeSizingModalProps> = ({
         </div>
 
         {/* Riding Style Selector */}
-        <div style={{ marginBottom: '1.75rem' }}>
+        <div style={{ marginBottom: '1.5rem' }}>
           <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.5rem' }}>
             Mục đích & Phong cách đạp xe:
           </label>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.5rem' }}>
             {[
               { key: 'all', label: 'Tất Cả Thể Loại' },
-              { key: 'mtb', label: 'Địa Hình / Phượt Đồi Núi' },
+              { key: 'mtb', label: 'Địa Hình / Đồi Núi' },
               { key: 'road', label: 'Tốc Độ / Đường Trường' },
               { key: 'touring', label: 'Dạo Phố / Đi Làm' },
-              { key: 'ebike', label: 'Trợ Lực Điện Thông Minh' },
-              { key: 'kids', label: 'Dành Cho Bé Tập Đi' },
+              { key: 'ebike', label: 'Trợ Lực Điện' },
+              { key: 'kids', label: 'Dành Cho Bé' },
             ].map(item => (
               <button
                 key={item.key}
                 onClick={() => setRidingStyle(item.key as any)}
                 style={{
-                  padding: '0.6rem 0.5rem',
+                  padding: '0.55rem 0.5rem',
                   borderRadius: 'var(--radius-md)',
                   border: ridingStyle === item.key ? '2px solid #f97316' : '1px solid #e2e8f0',
                   background: ridingStyle === item.key ? '#fff7ed' : '#ffffff',
                   color: ridingStyle === item.key ? '#f97316' : '#475569',
                   fontWeight: 600,
-                  fontSize: '0.8rem',
+                  fontSize: '0.78rem',
                   textAlign: 'center'
                 }}
               >
@@ -162,8 +162,8 @@ export const BikeSizingModal: React.FC<BikeSizingModalProps> = ({
             background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
             color: '#ffffff',
             borderRadius: 'var(--radius-lg)',
-            padding: '1.5rem',
-            marginBottom: '1.75rem',
+            padding: '1.25rem',
+            marginBottom: '1.5rem',
             border: '1px solid rgba(255,255,255,0.1)'
           }}
         >
@@ -171,19 +171,19 @@ export const BikeSizingModal: React.FC<BikeSizingModalProps> = ({
             <CheckCircle2 size={18} /> KẾT QUẢ KHUYẾN NGHỊ DÀNH CHO BẠN
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', margin: '0.75rem 0' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem', margin: '0.75rem 0' }}>
             <div style={{ background: 'rgba(255,255,255,0.05)', padding: '0.75rem', borderRadius: '8px' }}>
-              <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Size khung sườn phù hợp:</div>
-              <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#f97316' }}>{rec.frameSize}</div>
+              <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Size khung sườn:</div>
+              <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#f97316' }}>{rec.frameSize}</div>
             </div>
 
             <div style={{ background: 'rgba(255,255,255,0.05)', padding: '0.75rem', borderRadius: '8px' }}>
               <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Độ cao yên xe gợi ý:</div>
-              <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#38bdf8' }}>{rec.seatHeight}</div>
+              <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#38bdf8' }}>{rec.seatHeight}</div>
             </div>
           </div>
 
-          <p style={{ margin: 0, fontSize: '0.85rem', color: '#cbd5e1', lineHeight: 1.5 }}>
+          <p style={{ margin: 0, fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.5 }}>
             {rec.advice}
           </p>
         </div>

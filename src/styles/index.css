@@ -126,6 +126,39 @@ img, video {
   padding-right: 1.25rem;
 }
 
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Responsive Display Utilities */
+.hide-on-mobile {
+  display: flex !important;
+}
+.hide-on-tablet {
+  display: flex !important;
+}
+.show-on-mobile-only {
+  display: none !important;
+}
+
+@media (max-width: 1024px) {
+  .hide-on-tablet {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+  .show-on-mobile-only {
+    display: flex !important;
+  }
+}
+
 /* Badge Styles */
 .badge {
   display: inline-flex;
@@ -215,6 +248,13 @@ img, video {
   padding: 1rem 2rem;
   font-size: 1.1rem;
   border-radius: var(--radius-lg);
+}
+
+@media (max-width: 640px) {
+  .btn-lg {
+    padding: 0.85rem 1.35rem;
+    font-size: 0.95rem;
+  }
 }
 
 /* Keyframes */

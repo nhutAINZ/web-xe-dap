@@ -58,24 +58,24 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
           <X size={20} />
         </button>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
+        <div className="modal-grid-2col">
           {/* Visual Image */}
           <div>
             <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: '#f8fafc', border: '1px solid var(--border-light)' }}>
               <img
                 src={selectedVariant.image || product.thumbnail}
                 alt={product.name}
-                style={{ width: '100%', height: '340px', objectFit: 'cover' }}
+                style={{ width: '100%', height: '280px', objectFit: 'cover' }}
               />
             </div>
             
-            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem' }}>
+            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem', overflowX: 'auto', paddingBottom: '0.25rem' }}>
               {product.gallery.slice(0, 3).map((img, i) => (
                 <img
                   key={i}
                   src={img}
                   alt="thumbnail"
-                  style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '6px', cursor: 'pointer', border: '1px solid #e2e8f0' }}
+                  style={{ width: '55px', height: '55px', objectFit: 'cover', borderRadius: '6px', cursor: 'pointer', border: '1px solid #e2e8f0', flexShrink: 0 }}
                 />
               ))}
             </div>

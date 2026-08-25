@@ -98,17 +98,17 @@ export const StaticPages: React.FC<StaticPagesProps> = ({
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2.5rem', marginBottom: '4rem' }}>
-            <div style={{ background: 'rgba(15, 23, 42, 0.7)', padding: '2rem', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#f97316', marginBottom: '0.75rem' }}>Tầm Nhìn Của Chúng Tôi</h3>
-              <p style={{ color: '#94a3b8', lineHeight: 1.7, fontSize: '0.95rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
+            <div style={{ background: 'rgba(15, 23, 42, 0.7)', padding: '1.75rem', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#f97316', marginBottom: '0.65rem' }}>Tầm Nhìn Của Chúng Tôi</h3>
+              <p style={{ color: '#94a3b8', lineHeight: 1.7, fontSize: '0.9rem' }}>
                 Xây dựng cộng đồng đạp xe văn minh, lành mạnh và kết nối triệu người yêu thể thao khắp đất nước. Mang đến những sản phẩm đạt tiêu chuẩn thi đấu quốc tế với mức giá phù hợp nhất.
               </p>
             </div>
 
-            <div style={{ background: 'rgba(15, 23, 42, 0.7)', padding: '2rem', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#38bdf8', marginBottom: '0.75rem' }}>Cam Kết Chất Lượng</h3>
-              <p style={{ color: '#94a3b8', lineHeight: 1.7, fontSize: '0.95rem' }}>
+            <div style={{ background: 'rgba(15, 23, 42, 0.7)', padding: '1.75rem', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#38bdf8', marginBottom: '0.65rem' }}>Cam Kết Chất Lượng</h3>
+              <p style={{ color: '#94a3b8', lineHeight: 1.7, fontSize: '0.9rem' }}>
                 100% sản phẩm có nguồn gốc xuất xứ minh bạch, kiểm tra 30 bước khắt khe trước khi xuất kho và dịch vụ chăm sóc hậu mãi trọn đời xe.
               </p>
             </div>

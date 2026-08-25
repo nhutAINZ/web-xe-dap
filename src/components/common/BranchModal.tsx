@@ -113,9 +113,9 @@ export const BranchModal: React.FC<BranchModalProps> = ({
           </div>
         )}
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.35fr', gap: '1.5rem' }}>
+        <div className="branch-modal-grid">
           {/* Branch List */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: '460px', overflowY: 'auto' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: '340px', overflowY: 'auto' }}>
             {branches.map((b) => (
               <div
                 key={b.id}
@@ -124,7 +124,7 @@ export const BranchModal: React.FC<BranchModalProps> = ({
                   analytics.logClick('banner', `Chọn xem showroom: ${b.name}`);
                 }}
                 style={{
-                  padding: '1rem',
+                  padding: '0.85rem',
                   borderRadius: 'var(--radius-md)',
                   border: selectedBranch.id === b.id ? '2px solid #f97316' : '1px solid #e2e8f0',
                   background: selectedBranch.id === b.id ? '#fff7ed' : '#ffffff',
@@ -132,17 +132,17 @@ export const BranchModal: React.FC<BranchModalProps> = ({
                   transition: 'all 0.2s ease'
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-                  <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#0f172a' }}>{b.name}</h4>
-                  <span style={{ fontSize: '0.75rem', color: '#f97316', fontWeight: 700, background: 'rgba(249,115,22,0.1)', padding: '0.15rem 0.45rem', borderRadius: '4px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                  <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>{b.name}</h4>
+                  <span style={{ fontSize: '0.72rem', color: '#f97316', fontWeight: 700, background: 'rgba(249,115,22,0.1)', padding: '0.15rem 0.45rem', borderRadius: '4px' }}>
                     {b.city}
                   </span>
                 </div>
-                <div style={{ fontSize: '0.82rem', color: '#64748b', display: 'flex', alignItems: 'flex-start', gap: '0.35rem', marginBottom: '0.35rem' }}>
-                  <MapPin size={15} color="#f97316" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <div style={{ fontSize: '0.8rem', color: '#64748b', display: 'flex', alignItems: 'flex-start', gap: '0.35rem', marginBottom: '0.35rem' }}>
+                  <MapPin size={14} color="#f97316" style={{ flexShrink: 0, marginTop: '2px' }} />
                   <span>{b.address}</span>
                 </div>
-                <div style={{ fontSize: '0.8rem', color: '#334155', display: 'flex', gap: '1rem' }}>
+                <div style={{ fontSize: '0.78rem', color: '#334155', display: 'flex', gap: '1rem' }}>
                   <span>📞 {b.phone}</span>
                   <span>🕒 {b.hours?.split('(')[0] || '08:00 - 21:00'}</span>
                 </div>

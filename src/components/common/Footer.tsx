@@ -27,33 +27,20 @@ export const Footer: React.FC<FooterProps> = ({
   };
 
   return (
-    <footer style={{ background: '#090d16', color: '#f8fafc', paddingTop: '4.5rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+    <footer style={{ background: '#090d16', color: '#f8fafc', paddingTop: '4rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
       <div className="container">
         {/* Top Newsletter Strip */}
-        <div 
-          style={{
-            background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(15, 23, 42, 0.9))',
-            border: '1px solid rgba(249, 115, 22, 0.3)',
-            borderRadius: 'var(--radius-xl)',
-            padding: '2.5rem',
-            marginBottom: '4rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '1.5rem'
-          }}
-        >
+        <div className="footer-newsletter-card">
           <div style={{ maxWidth: '500px' }}>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ffffff', marginBottom: '0.35rem' }}>
+            <h3 style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)', fontWeight: 800, color: '#ffffff', marginBottom: '0.35rem' }}>
               Đăng Ký Nhận Voucher 200.000đ
             </h3>
-            <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: 0 }}>
+            <p style={{ color: '#94a3b8', fontSize: '0.88rem', margin: 0, lineHeight: 1.5 }}>
               Cập nhật các chương trình flash sale, ra mắt xe mới và cẩm nang phượt xe đạp độc quyền từ Demo Xe Đạp.
             </p>
           </div>
 
-          <form onSubmit={handleSubscribe} style={{ display: 'flex', gap: '0.5rem', flex: 1, maxWidth: '420px' }}>
+          <form onSubmit={handleSubscribe} className="footer-newsletter-form">
             <input
               type="email"
               placeholder="Nhập địa chỉ email của bạn..."
@@ -68,7 +55,8 @@ export const Footer: React.FC<FooterProps> = ({
                 border: '1px solid rgba(255,255,255,0.2)',
                 color: '#ffffff',
                 fontSize: '0.88rem',
-                outline: 'none'
+                outline: 'none',
+                minWidth: 0
               }}
             />
             <button
@@ -82,8 +70,8 @@ export const Footer: React.FC<FooterProps> = ({
           </form>
         </div>
 
-        {/* Footer 4 Columns */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1.2fr', gap: '2.5rem', marginBottom: '3.5rem' }}>
+        {/* Footer Responsive 4 Columns */}
+        <div className="footer-grid">
           {/* Col 1: Brand Info */}
           <div>
             <div style={{ marginBottom: '1.25rem' }}>
@@ -106,7 +94,7 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Col 2: Categories */}
           <div>
-            <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff', marginBottom: '1.1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Danh Mục Xe
             </h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.6rem', fontSize: '0.88rem', color: '#94a3b8' }}>
@@ -121,7 +109,7 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Col 3: Policies & Guides */}
           <div>
-            <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff', marginBottom: '1.1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Chính Sách & Dịch Vụ
             </h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.6rem', fontSize: '0.88rem', color: '#94a3b8' }}>
@@ -135,20 +123,20 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Col 4: Showrooms */}
           <div>
-            <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff', marginBottom: '1.1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Hệ Thống Showroom
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', fontSize: '0.82rem', color: '#94a3b8' }}>
               <div>
-                <strong style={{ color: '#ffffff', display: 'block' }}>Showroom Quận 1 (Flagship)</strong>
+                <strong style={{ color: '#ffffff', display: 'block', marginBottom: '2px' }}>Showroom Quận 1 (Flagship)</strong>
                 <span>188 Nguyễn Thị Minh Khai, P. Bến Thành, Q.1, TP.HCM</span>
               </div>
               <div>
-                <strong style={{ color: '#ffffff', display: 'block' }}>Showroom Hà Nội</strong>
+                <strong style={{ color: '#ffffff', display: 'block', marginBottom: '2px' }}>Showroom Hà Nội</strong>
                 <span>89 Hoàng Cầu, P. Ô Chợ Dừa, Q. Đống Đa, Hà Nội</span>
               </div>
               <div>
-                <strong style={{ color: '#ffffff', display: 'block' }}>Showroom Đà Nẵng</strong>
+                <strong style={{ color: '#ffffff', display: 'block', marginBottom: '2px' }}>Showroom Đà Nẵng</strong>
                 <span>254 Nguyễn Văn Linh, P. Thạc Gián, Q. Thanh Khê, ĐN</span>
               </div>
               <button 
@@ -163,11 +151,11 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Bottom Copyright */}
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '1.75rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', fontSize: '0.8rem', color: '#64748b' }}>
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '1.5rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', fontSize: '0.78rem', color: '#64748b' }}>
           <div>
-            © 2026 Demo Xe Đạp (v2). Đã đăng ký bản quyền. Giấy phép ĐKKD số 0318999888 do Sở KH&ĐT TP.HCM cấp.
+            © 2026 Demo Xe Đạp (v2). Đã đăng ký bản quyền. Giấy phép ĐKKD số 0318999888.
           </div>
-          <div style={{ display: 'flex', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
               <ShieldCheck size={14} color="#10b981" /> 100% Bảo Mật Thông Tin
             </span>

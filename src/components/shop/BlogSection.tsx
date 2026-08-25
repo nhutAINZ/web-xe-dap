@@ -26,7 +26,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ articles, onReadArticl
         </div>
 
         {/* Articles Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.75rem' }}>
+        <div className="blog-grid">
           {articles.map((art) => (
             <article
               key={art.id}

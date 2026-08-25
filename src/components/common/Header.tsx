@@ -67,17 +67,17 @@ export const Header: React.FC<HeaderProps> = ({
               <Truck size={13} color="#f97316" />
               <span><strong>Freeship</strong> toàn quốc đơn từ 2.000.000đ</span>
             </span>
-            <span className="ticker-item" style={{ display: window.innerWidth < 768 ? 'none' : 'inline-flex' }}>
+            <span className="ticker-item hide-on-mobile">
               <ShieldCheck size={13} color="#10b981" />
               <span><strong>Bảo hành 5 năm</strong> • Cân vành trọn đời</span>
             </span>
-            <span className="ticker-item" style={{ display: window.innerWidth < 1024 ? 'none' : 'inline-flex' }}>
+            <span className="ticker-item hide-on-tablet">
               <Gift size={13} color="#38bdf8" />
               <span>Tặng quà phụ kiện <strong>850.000đ</strong> khi đặt trực tuyến</span>
             </span>
           </div>
 
-          <div className="ticker-links">
+          <div className="ticker-links hide-on-mobile">
             <button 
               onClick={() => {
                 analytics.logClick('cta_hero', 'Trắc nghiệm chọn size header');
@@ -150,9 +150,8 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="header-actions">
             <a 
               href="tel:19008888" 
-              className="header-action-badge hotline-badge"
+              className="header-action-badge hotline-badge hide-on-mobile"
               onClick={() => analytics.logClick('hotline', 'Gọi Hotline Header 1900 8888')}
-              style={{ display: window.innerWidth < 768 ? 'none' : 'flex' }}
             >
               <div className="pulse-indicator-dot" />
               <PhoneCall size={16} color="#f97316" />
@@ -167,8 +166,7 @@ export const Header: React.FC<HeaderProps> = ({
                 analytics.logClick('cta_hero', 'Xem showroom header');
                 onOpenBranches();
               }} 
-              className="header-action-badge showroom-badge"
-              style={{ display: window.innerWidth < 1024 ? 'none' : 'flex' }}
+              className="header-action-badge showroom-badge hide-on-tablet"
             >
               <MapPin size={16} color="#38bdf8" />
               <span>4 Showroom</span>
@@ -183,15 +181,14 @@ export const Header: React.FC<HeaderProps> = ({
               className="header-action-badge cart-badge-btn"
             >
               <ShoppingBag size={18} color="#ffffff" />
-              <span style={{ display: window.innerWidth < 640 ? 'none' : 'inline', color: '#ffffff', fontWeight: 700 }}>Giỏ Hàng</span>
+              <span className="hide-on-mobile" style={{ color: '#ffffff', fontWeight: 700 }}>Giỏ Hàng</span>
               {cartCount > 0 && <span className="cart-counter-glow">{cartCount}</span>}
             </button>
 
             {/* Mobile Menu Toggle */}
             <button 
-              className="header-action-badge mobile-menu-btn"
+              className="header-action-badge mobile-menu-btn show-on-mobile-only"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              style={{ display: window.innerWidth >= 1024 ? 'none' : 'flex' }}
               aria-label="Menu"
             >
               {mobileMenuOpen ? <X size={20} color="#ffffff" /> : <Menu size={20} color="#ffffff" />}
